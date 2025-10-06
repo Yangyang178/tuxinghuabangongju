@@ -32,7 +32,7 @@
 - 我们不使用代码混淆；代码保持可读，便于公众审查与安全评估。
 
 ## 七、联系我们
-- 如对隐私或安全有任何问题，请联系：`support@example.com`（可替换为你的邮箱）。
+- 如对隐私或安全有任何问题，请联系：`123456718@qq.com`（你的邮箱）。
 
 ---
 
@@ -70,4 +70,4 @@ This Privacy Policy applies to the browser extension Shape Canvas Tool (Chinese 
 - We do not use code obfuscation; the source code remains readable for public review and security assessment.
 
 ### 7. Contact
-- For privacy or security questions, contact: `support@example.com` (replace with your email).
+- For privacy or security questions, contact: `123456718@qq.com` (your email).
