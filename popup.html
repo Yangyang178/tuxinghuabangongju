@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" data-i18n-doc-title="popup_page_title">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图形画板工具</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- 内置 favicon，避免浏览器请求 /favicon.ico 导致 404 -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232b6ef3'/%3E%3Ctext x='32' y='40' font-size='36' text-anchor='middle' fill='white'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+    <div class="container" id="app-root">
+        <!-- 顶部标题栏 -->
+        <div class="header">
+            <div class="brand">
+                <div class="brand-logo">✦</div>
+                <div class="brand-text">
+                    <div class="brand-title" data-i18n="brand_title">图形画板工具</div>
+                    <div class="brand-subtitle" data-i18n="brand_subtitle">轻松绘制 · 精美导出</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" id="shortcuts-help" data-i18n-title="shortcuts_help" title="快捷键说明">
+                    <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true">
+                        <rect x="3" y="4" width="14" height="10" rx="2" fill="currentColor"/>
+                        <line x1="5" y1="7" x2="15" y2="7" stroke="white" stroke-width="1"/>
+                        <line x1="5" y1="10" x2="12" y2="10" stroke="white" stroke-width="1"/>
+                    </svg>
+                    <span data-i18n="shortcuts_help">快捷键说明</span>
+                </button>
+            </div>
+        </div>
+        <!-- 工具栏 -->
+        <div class="toolbar">
+            <div class="tool-group">
+                <h3 data-i18n="toolbar_basic_shapes">基础形状</h3>
+                <button class="tool-btn" data-shape="rectangle">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <rect x="2" y="4" width="16" height="12" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                    <span data-i18n="rectangle">矩形</span>
+                </button>
+                <button class="tool-btn" data-shape="circle">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <circle cx="10" cy="10" r="8" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                    <span data-i18n="circle">圆形</span>
+                </button>
+                <button class="tool-btn" data-shape="ellipse">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <ellipse cx="10" cy="10" rx="8" ry="5" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                    <span data-i18n="ellipse">椭圆</span>
+                </button>
+                <button class="tool-btn" data-shape="triangle">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <polygon points="10,2 18,16 2,16" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                    <span data-i18n="triangle">三角形</span>
+                </button>
+                <button class="tool-btn" data-shape="star">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <polygon points="10,1 12.5,7.5 19,7.5 14,12 16,19 10,15 4,19 6,12 1,7.5 7.5,7.5" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                    <span data-i18n="star">星形</span>
+                </button>
+                <button class="tool-btn" data-shape="arrow">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <polygon points="2,6 14,6 14,2 18,10 14,18 14,14 2,14" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                    <span data-i18n="arrow">箭头</span>
+                </button>
+                <button class="tool-btn" data-shape="pentagon">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <polygon points="10,2 18,8 15,18 5,18 2,8" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                    <span data-i18n="pentagon">五边形</span>
+                </button>
+                <button class="tool-btn" data-shape="hexagon">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <polygon points="5,2 15,2 18,10 15,18 5,18 2,10" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                    <span data-i18n="hexagon">六边形</span>
+                </button>
+                <button class="tool-btn" data-shape="diamond">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <polygon points="10,2 18,10 10,18 2,10" fill="currentColor" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                    <span data-i18n="diamond">菱形</span>
+                </button>
+                <button class="tool-btn" data-shape="line">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <line x1="2" y1="10" x2="18" y2="10" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span data-i18n="line">直线</span>
+                </button>
+            </div>
+            
+            <div class="tool-group">
+                <h3 data-i18n="toolbar_actions">操作工具</h3>
+                <button class="tool-btn" id="select-tool">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <path d="M2 2 L8 8 L6 10 L2 6 Z" fill="currentColor"/>
+                    </svg>
+                    <span data-i18n="select">选择</span>
+                </button>
+                <button class="tool-btn" id="annotate-tool" data-i18n-title="annotate_tooltip" title="在图形上标注点">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <circle cx="10" cy="10" r="3" fill="currentColor"/>
+                        <path d="M2 18 L18 2" stroke="currentColor" stroke-width="1"/>
+                    </svg>
+                    <span data-i18n="annotate">标注</span>
+                </button>
+                <button class="tool-btn" id="cut-tool">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <path d="M4 5 L9 8 L4 11" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <circle cx="12" cy="6" r="2" stroke="currentColor" fill="none"/>
+                        <circle cx="12" cy="14" r="2" stroke="currentColor" fill="none"/>
+                    </svg>
+                    <span data-i18n="cut">切割</span>
+                </button>
+                <button class="tool-btn" id="delete-tool">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <path d="M6 2 L14 2 L14 4 L18 4 L18 6 L16 6 L16 18 L4 18 L4 6 L2 6 L2 4 L6 4 Z M8 8 L8 14 L10 14 L10 8 Z M12 8 L12 14 L14 14 L14 8 Z" fill="currentColor"/>
+                    </svg>
+                    <span data-i18n="delete">删除</span>
+                </button>
+                <button class="tool-btn" id="undo-action">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <path d="M8 4 L4 8 L8 12" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M6 8 H12 A4 4 0 1 1 8 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span data-i18n="undo">撤销</span>
+                </button>
+                <button class="tool-btn" id="clear-all">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <path d="M4 4 L16 16 M16 4 L4 16" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span data-i18n="clear">清空</span>
+                </button>
+            </div>
+
+            <div class="tool-group">
+                <h3 data-i18n="toolbar_view">视图</h3>
+                <button class="tool-btn" id="zoom-in" data-i18n-title="zoom_in_title" title="放大 (Ctrl +)">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <circle cx="9" cy="9" r="6" stroke="currentColor" fill="none" stroke-width="2"/>
+                        <line x1="9" y1="6" x2="9" y2="12" stroke="currentColor" stroke-width="2"/>
+                        <line x1="6" y1="9" x2="12" y2="9" stroke="currentColor" stroke-width="2"/>
+                        <line x1="14" y1="14" x2="18" y2="18" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span data-i18n="zoom_in">放大</span>
+                </button>
+                <button class="tool-btn" id="zoom-out" data-i18n-title="zoom_out_title" title="缩小 (Ctrl -)">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <circle cx="9" cy="9" r="6" stroke="currentColor" fill="none" stroke-width="2"/>
+                        <line x1="6" y1="9" x2="12" y2="9" stroke="currentColor" stroke-width="2"/>
+                        <line x1="14" y1="14" x2="18" y2="18" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    <span data-i18n="zoom_out">缩小</span>
+                </button>
+                <button class="tool-btn" id="zoom-reset" data-i18n-title="zoom_reset_title" title="重置视图">
+                    <svg width="20" height="20" viewBox="0 0 20 20">
+                        <path d="M10 2 A8 8 0 1 1 2 10" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M2 10 L2 4 L6 4" stroke="currentColor" stroke-width="2" fill="none"/>
+                    </svg>
+                    <span data-i18n="zoom_reset">重置</span>
+                </button>
+            </div>
+            
+            </div>
+
+        <!-- 画布区域 -->
+        <div class="canvas-container">
+            <canvas id="canvas" width="800" height="600"></canvas>
+            <div class="canvas-overlay" id="canvas-overlay"></div>
+        </div>
+
+        <!-- 调色板和属性面板 -->
+        <div class="properties-panel">
+            <div class="color-section">
+                <h3 data-i18n="properties_color">颜色</h3>
+                <div class="color-controls">
+                    <label data-i18n="fill_color_label">填充色:</label>
+                    <input type="color" id="fill-color" value="#3498db">
+                    <label data-i18n="stroke_color_label">边框色:</label>
+                    <input type="color" id="stroke-color" value="#2c3e50">
+                    <label data-i18n="stroke_width_label">边框宽度:</label>
+                    <input type="range" id="stroke-width" min="0" max="10" value="2">
+                    <span id="stroke-width-value">2</span>
+                </div>
+                
+                <div class="color-picker-section">
+                    <h4 data-i18n="color_picker_title">颜色选择</h4>
+                    <div class="color-picker-container">
+                        <canvas id="color-picker-canvas" width="200" height="150"></canvas>
+                        <div class="color-controls-row">
+                            <div class="current-color-display">
+                                <div id="current-color-preview" style="background-color: #3498db;"></div>
+                                <span id="current-color-hex">#3498db</span>
+                            </div>
+                            <input type="color" id="color-input" value="#3498db" data-i18n-title="precise_color_picker_title" title="精确颜色选择">
+                        </div>
+                    </div>
+                    
+                    <div class="preset-colors">
+                        <h4 data-i18n="quick_select_title">快速选择</h4>
+                        <div class="color-palette-quick">
+                            <div class="color-swatch" data-color="#e74c3c" style="background-color: #e74c3c;" data-i18n-title="color_red" title="红色"></div>
+                            <div class="color-swatch" data-color="#3498db" style="background-color: #3498db;" data-i18n-title="color_blue" title="蓝色"></div>
+                            <div class="color-swatch" data-color="#2ecc71" style="background-color: #2ecc71;" data-i18n-title="color_green" title="绿色"></div>
+                            <div class="color-swatch" data-color="#f39c12" style="background-color: #f39c12;" data-i18n-title="color_orange" title="橙色"></div>
+                            <div class="color-swatch" data-color="#9b59b6" style="background-color: #9b59b6;" data-i18n-title="color_purple" title="紫色"></div>
+                            <div class="color-swatch" data-color="#1abc9c" style="background-color: #1abc9c;" data-i18n-title="color_cyan" title="青色"></div>
+                            <div class="color-swatch" data-color="#34495e" style="background-color: #34495e;" data-i18n-title="color_dark_gray" title="深灰"></div>
+                            <div class="color-swatch" data-color="#95a5a6" style="background-color: #95a5a6;" data-i18n-title="color_light_gray" title="浅灰"></div>
+                            <div class="color-swatch" data-color="#2c3e50" style="background-color: #2c3e50;" data-i18n-title="color_black" title="黑色"></div>
+                            <div class="color-swatch" data-color="#ecf0f1" style="background-color: #ecf0f1;" data-i18n-title="color_white" title="白色"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="export-section">
+                <h3 data-i18n="export_section">导出</h3>
+                <button id="export-svg" class="export-btn" data-i18n="export_svg">导出 SVG</button>
+                <button id="export-png" class="export-btn" data-i18n="export_png">导出 PNG</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 快捷键说明弹窗 -->
+    <div id="shortcuts-overlay" class="modal-overlay" aria-hidden="true"></div>
+    <div id="shortcuts-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="shortcuts-title" aria-hidden="true">
+        <div class="modal-header">
+            <h3 id="shortcuts-title" data-i18n="shortcuts_modal_title">快捷键说明</h3>
+            <button id="shortcuts-close" class="modal-close" data-i18n-aria-label="shortcuts_close_label" aria-label="关闭">×</button>
+        </div>
+        <div class="modal-body">
+            <ul class="shortcut-list">
+                <li data-i18n-html="shortcuts_item_select_tool"><span class="keycap">V</span> 或 <span class="keycap">Esc</span>：选择工具</li>
+                <li data-i18n-html="shortcuts_item_shape_keys"><span class="keycap">R</span>：矩形；<span class="keycap">C</span>：圆形；<span class="keycap">T</span>：三角形；<span class="keycap">L</span>：直线；<span class="keycap">X</span>：切割</li>
+                <li data-i18n-html="shortcuts_item_delete"><span class="keycap">Delete</span> / <span class="keycap">Backspace</span>：删除选中图形</li>
+                <li data-i18n-html="shortcuts_item_export_undo"><span class="keycap">Ctrl</span> + <span class="keycap">S</span>：导出 SVG；<span class="keycap">Ctrl</span> + <span class="keycap">Z</span>：撤销</li>
+                <li data-i18n="shortcuts_item_wheel_zoom">鼠标滚轮：缩放视图</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="i18n.js"></script>
+    <script src="canvas-engine.js"></script>
+    <script src="color-picker.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>

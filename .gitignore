@@ -1,0 +1,24 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Archives
+*.zip
+*.tar.gz
+*.rar
+
+# Binaries
+*.exe
+*.dll
+*.bin
+
+# Logs
+*.log
+
+# Build output
+dist/
+out/
+build/
+
+# Coverage
+coverage/

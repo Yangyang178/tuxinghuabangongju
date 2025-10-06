@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PNG图标生成器</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .icon-preview {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .icon-item {
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        .icon-item canvas {
+            display: block;
+            margin: 0 auto 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+        }
+        .download-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.2s;
+            margin: 2px;
+        }
+        .download-btn:hover {
+            background: #0056b3;
+        }
+        .generate-all-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 500;
+            display: block;
+            margin: 30px auto;
+        }
+        .generate-all-btn:hover {
+            background: #1e7e34;
+        }
+        .instructions {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border-left: 4px solid #007bff;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #0056b3;
+        }
+        .status {
+            text-align: center;
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 PNG图标生成器</h1>
+        
+        <div id="status" class="status" style="display: none;"></div>
+        
+        <div class="icon-preview" id="iconPreview">
+            <!-- 图标预览将在这里生成 -->
+        </div>
+        
+        <button onclick="generateAllIcons()" class="generate-all-btn">
+            生成并下载所有PNG图标
+        </button>
+        
+        <div class="instructions">
+            <h3>使用说明：</h3>
+            <ol>
+                <li>点击上方的"生成并下载所有PNG图标"按钮</li>
+                <li>系统会自动下载4个PNG文件：icon16.png、icon32.png、icon48.png、icon128.png</li>
+                <li>将这些文件放入插件的 icons 文件夹中</li>
+                <li>重新加载浏览器插件即可</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function createIconCanvas(size) {
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // 创建渐变背景
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            
+            // 绘制圆角矩形背景
+            const radius = size / 5;
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, radius);
+            ctx.fill();
+            
+            // 绘制白色画布区域
+            const canvasSize = size * 0.7;
+            const canvasOffset = size * 0.15;
+            const canvasRadius = size / 16;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+            ctx.beginPath();
+            ctx.roundRect(canvasOffset, canvasOffset, canvasSize, canvasSize, canvasRadius);
+            ctx.fill();
+            
+            // 绘制示例图形（根据尺寸调整）
+            if (size >= 32) {
+                // 圆形
+                ctx.fillStyle = '#3498db';
+                ctx.beginPath();
+                ctx.arc(size * 0.35, size * 0.35, size * 0.09, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // 矩形
+                ctx.fillStyle = '#e74c3c';
+                ctx.fillRect(size * 0.5, size * 0.26, size * 0.19, size * 0.125);
+                
+                // 三角形
+                ctx.fillStyle = '#2ecc71';
+                ctx.beginPath();
+                ctx.moveTo(size * 0.35, size * 0.59);
+                ctx.lineTo(size * 0.45, size * 0.74);
+                ctx.lineTo(size * 0.26, size * 0.74);
+                ctx.closePath();
+                ctx.fill();
+                
+                if (size >= 48) {
+                    // 线条
+                    ctx.strokeStyle = '#f39c12';
+                    ctx.lineWidth = size * 0.02;
+                    ctx.lineCap = 'round';
+                    ctx.beginPath();
+                    ctx.moveTo(size * 0.55, size * 0.55);
+                    ctx.lineTo(size * 0.7, size * 0.7);
+                    ctx.stroke();
+                }
+            }
+            
+            return canvas;
+        }
+        
+        function generateAllIcons() {
+            const sizes = [16, 32, 48, 128];
+            const preview = document.getElementById('iconPreview');
+            const status = document.getElementById('status');
+            
+            preview.innerHTML = '';
+            status.style.display = 'block';
+            status.className = 'status';
+            status.textContent = '正在生成图标...';
+            
+            let downloadCount = 0;
+            
+            sizes.forEach((size, index) => {
+                setTimeout(() => {
+                    const canvas = createIconCanvas(size);
+                    
+                    // 创建预览
+                    const iconItem = document.createElement('div');
+                    iconItem.className = 'icon-item';
+                    
+                    const label = document.createElement('div');
+                    label.textContent = `${size}x${size}`;
+                    label.style.fontWeight = '500';
+                    label.style.marginBottom = '10px';
+                    
+                    const previewCanvas = canvas.cloneNode();
+                    const previewCtx = previewCanvas.getContext('2d');
+                    previewCtx.drawImage(canvas, 0, 0);
+                    
+                    const downloadBtn = document.createElement('button');
+                    downloadBtn.className = 'download-btn';
+                    downloadBtn.textContent = `下载 icon${size}.png`;
+                    downloadBtn.onclick = () => downloadIcon(canvas, size);
+                    
+                    iconItem.appendChild(label);
+                    iconItem.appendChild(previewCanvas);
+                    iconItem.appendChild(downloadBtn);
+                    preview.appendChild(iconItem);
+                    
+                    // 自动下载
+                    setTimeout(() => {
+                        downloadIcon(canvas, size);
+                        downloadCount++;
+                        
+                        if (downloadCount === sizes.length) {
+                            status.className = 'status success';
+                            status.textContent = '✅ 所有PNG图标已生成并下载完成！请将文件放入 icons 文件夹。';
+                        }
+                    }, 500 + index * 200);
+                    
+                }, index * 300);
+            });
+        }
+        
+        function downloadIcon(canvas, size) {
+            const link = document.createElement('a');
+            link.download = `icon${size}.png`;
+            link.href = canvas.toDataURL('image/png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        
+        // 添加roundRect支持（如果浏览器不支持）
+        if (!CanvasRenderingContext2D.prototype.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function(x, y, width, height, radius) {
+                this.moveTo(x + radius, y);
+                this.lineTo(x + width - radius, y);
+                this.quadraticCurveTo(x + width, y, x + width, y + radius);
+                this.lineTo(x + width, y + height - radius);
+                this.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+                this.lineTo(x + radius, y + height);
+                this.quadraticCurveTo(x, y + height, x, y + height - radius);
+                this.lineTo(x, y + radius);
+                this.quadraticCurveTo(x, y, x + radius, y);
+            };
+        }
+    </script>
+</body>
+</html>
